@@ -30,11 +30,12 @@ echo "GITHUB_REF:                 ${GITHUB_REF}"
 export FOD_ACCESS_KEY=${INPUT_FOD_ACCESS_KEY}
 export FOD_SECRET_KEY=${INPUT_FOD_SECRET_KEY}
 
-${FOD_UPLOADER_JAR} \
+java -jar "${FOD_UPLOADER_JAR}" \
+  -ac  "${FOD_ACCESS_KEY}" "${FOD_SECRET_KEY}" \
   -bsi "${BSI_TOKEN}" \
   -ep  "${ENTITLEMENT_PREFERENCE}" \
   -rp  "${REMEDIATION_SCAN_PREFERENCE}" \
-  -ip  "${INPROGRESS_SCAN_ACTION}" \
+  -pp  "${IN_PROGRESS_SCAN_ACTION}" \
   -z   "${ZIP_LOCATION}" \
   -I   "${POLLING_INTERVAL}"
 
