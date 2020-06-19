@@ -1,0 +1,54 @@
+name: 'Fortify on Demand GitHub action'
+description: 'Ensure your code quality meet given standards'
+inputs:
+  repo_token:
+    description: 'Token to checkout the repository.'
+    required: true
+  code_inspector_access_key:
+    description: 'Access key on Code Inspector'
+    required: true
+  code_inspector_secret_key:
+    description: 'Secret key on Code Inspector'
+    required: true
+  min_quality_grade:
+    description: 'Minimum grade. Valid options are EXCELLENT, GOOD, NEUTRAL, WARNING, CRITICAL. Leave blank to ignore.'
+    required: true
+    default: ''
+  min_quality_score:
+    description: 'Minimum quality score from 0 (worst) to 100 (best)'
+    required: true
+    default: '0'
+  max_defects_rate:
+    description: 'Maximum defect rate per line of code (e.g. 0.01 for 1 defect per 100 lines of code). Leave 0 to ignore.'
+    required: true
+    default: '0'
+  max_complex_functions_rate:
+    description: 'Maximum number of complex functions rate (e.g. number of complex functions / number of functions). Leave 0 to ignore.'
+    required: true
+    default: '0'
+  max_long_functions_rate:
+    description: 'Maximum number of long functions rate (e.g. number of long functions / number of functions). Leave 0 to ignore.'
+    required: true
+    default: '0'
+  project_name:
+    description: 'Project on code inspector. Will use the preferences of this analysis. Leave blank and no preferences are used'
+    required: true
+    default: ''
+  max_timeout_sec:
+    description: 'Timeout before giving up (in case analysis takes too long). Default is 10 minutes'
+    required: true
+    default: '600'
+branding:
+  icon: 'search'
+  color: 'blue'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.min_quality_grade }}
+    - ${{ inputs.min_quality_score }}
+    - ${{ inputs.max_defects_rate }}
+    - ${{ inputs.max_complex_functions_rate }}
+    - ${{ inputs.max_long_functions_rate }}
+    - ${{ inputs.project_name }}
+    - ${{ inputs.max_timeout_sec }}
