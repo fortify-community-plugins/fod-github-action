@@ -5,6 +5,7 @@ try {
     console.log("Fortify on Demand GitHub Action")
 
     // inputs
+    const input1 = core.getInput('input1');
     const repo_token = core.getInput('repo_token');
     const fod_access_key = core.getInput('fod_access_key');
     const fod_secret_key = core.getInput('fod_secret_key');
@@ -14,7 +15,8 @@ try {
     const in_progress_scan_action = core.getInput('in_progress_scan_action');
     const zip_location = core.getInput('zip_location');
     const polling_interval = core.getInput('polling_interval');
-    
+
+    console.log(test1);
     console.log('fod_access_key: ${fod_access_key}!');
     console.log('fod_secret_key: ${fod_secret_key}!');
     console.log('bsi_token: ${bsi_token}!');
