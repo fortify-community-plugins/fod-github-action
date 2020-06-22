@@ -28,11 +28,9 @@ async function run() {
         console.log('zip_location: ' + zip_location);
         console.log('polling_interval: ' + polling_interval);
 
-        //console.log('Downloading FODUploader...')
+        console.log('Downloading FODUploader...')
         const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
-        //const fodUploaderExtract = await tc.extractZip(fodUploaderPath)
-        //core.addPath(fodUploaderExtract);
-        //console.log(fodUploaderExtract);
+        console.log(fodUploaderPath)
         await exec.exec('java', ['-jar', "FodUpload.jar", '-version'])
 
         const time = (new Date()).toTimeString();
