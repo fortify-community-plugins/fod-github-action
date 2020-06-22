@@ -16,7 +16,7 @@ try {
     const zip_location = core.getInput('zip_location');
     const polling_interval = core.getInput('polling_interval');
 
-    console.log(test1);
+    console.log(input1);
     console.log('fod_access_key: ${fod_access_key}!');
     console.log('fod_secret_key: ${fod_secret_key}!');
     console.log('bsi_token: ${bsi_token}!');
