@@ -2,6 +2,8 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
+    console.log("Fortify on Demand GitHub Action")
+
     // inputs
     const repo_token = core.getInput('repo_token');
     const fod_access_key = core.getInput('fod_access_key');
