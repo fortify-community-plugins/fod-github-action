@@ -7,9 +7,9 @@ on:
     branches: [ master ]
 
 jobs:
-  check-quality:
+  build:
     runs-on: ubuntu-latest
-    name: A job to check my code quality
+    name: Debug
     steps:
       - uses: actions/checkout@v1
           with:
