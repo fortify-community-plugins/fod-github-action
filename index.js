@@ -28,11 +28,12 @@ async function run() {
         console.log('zip_location: ' + zip_location);
         console.log('polling_interval: ' + polling_interval);
 
-        console.log('Downloading FODUploader...')
-        const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar');
-        core.addPath(fodUploaderPath);
-        console.log(fodUploaderPath);
-        await exec.exec('FodUpload.jar -version');
+        //console.log('Downloading FODUploader...')
+        //const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar');
+        //core.addPath(fodUploaderPath);
+        //console.log(fodUploaderPath);
+        await exec.exe('ls');
+        await exec.exec('./FodUpload/FodUpload.jar -version');
 
 
         const time = (new Date()).toTimeString();
