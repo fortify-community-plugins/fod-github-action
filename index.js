@@ -31,8 +31,15 @@ async function run() {
         console.log('Downloading FODUploader...')
         const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
         console.log(fodUploaderPath)
-        await exec.exec('java', ['-jar', "FodUpload.jar", '-help'])
-        await exec.exec('FodUpload.jar' ['-version'])
+        await exec.exec('java', ['-jar', "FodUpload.jar",
+            '-ac', fod_access_key, fod_secret_key,
+            '-bsi', bsi_token,
+            '-ep', entitlement_preference,
+            '-rp', remediation_scan_preference,
+            '-pp', in_progress_scan_action,
+            '-z', zip_location,
+            '-i', polling_interval
+        ])
 
         const time = (new Date()).toTimeString();
         core.setOutput("time", time);
