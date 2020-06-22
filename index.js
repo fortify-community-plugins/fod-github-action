@@ -33,7 +33,7 @@ async function run() {
         //const fodUploaderExtract = await tc.extractZip(fodUploaderPath)
         //core.addPath(fodUploaderExtract);
         //console.log(fodUploaderExtract);
-        await exec.exec('java', ['jar', "FodUpload.jar", '-version'])
+        await exec.exec('java', ['-jar', "FodUpload.jar", '-version'])
 
         const time = (new Date()).toTimeString();
         core.setOutput("time", time);
