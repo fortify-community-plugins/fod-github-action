@@ -30,7 +30,9 @@ async function run() {
 
         console.log('Downloading FODUploader...')
         const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar');
-        await exec.exec('java -jar ./FODUpload.jar -version');
+        core.addPath(fodUploaderPath);
+        console.log(fodUploaderPath);
+        await exec.exec('java -jar ./FodUpload.jar -version');
 
 
         const time = (new Date()).toTimeString();
