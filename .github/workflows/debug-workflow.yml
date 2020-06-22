@@ -16,7 +16,6 @@ jobs:
           fetch-depth: 1
       - uses: fortify-community-plugins/fod-github-action@master
         with:
-          input1: 'test'
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
