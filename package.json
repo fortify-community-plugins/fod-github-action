@@ -22,5 +22,6 @@
     "@actions/exec": "^1.0.4",
     "@actions/github": "^3.0.0",
     "@actions/tool-cache": "^1.5.5"
-  }
+  },
+  "devDependencies": {}
 }
