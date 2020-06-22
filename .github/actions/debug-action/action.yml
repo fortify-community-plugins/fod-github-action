@@ -1,0 +1,41 @@
+name: 'Fortify on Demand GitHub action'
+description: 'Ensure your code is secure.'
+inputs:
+  repo_token:
+    description: 'Token to checkout the repository.'
+    required: true
+  fod_access_key:
+    description: 'API Access key for Fortify on Demand'
+    required: true
+  fod_secret_key:
+    description: 'API Secret key for Fortify on Demand'
+    required: true
+  bsi_token:
+    description: 'Build server token'
+    required: true
+  entitlement_preference:
+    description: 'Whether to use a single scan or subscription assessment: 1/SingleScanOnly, 2/SubscriptionOnly, 3/SingleScanFirstThenSubscription, 4/SubscriptionFirstThenSingleScan'
+    required: true
+    default: 'SubscriptionOnly'
+  remediation_scan_preference:
+    description: 'Whether to run a remediation scan: 0/RemediationScanIfAvailable, 1/RemediationScanOnly, 2/NonRemediationScanOnly'
+    required: true
+    default: 'NonRemediationScanOnly'
+  in_progress_scan_action:
+    description: 'Whether to cancel an in-progress scan and start a new scan or not start a scan: 0/DoNotStartScan, 1/CancelScanInProgress'
+    required: true
+    default: 'DoNotStartScan'
+  zip_location:
+    description: 'Location of scan'
+    required: true
+    default: 'fod.zip'
+  polling_interval:
+    description: 'Interval between checking scan status in minutes'
+    required: true
+    default: '5'
+branding:
+  icon: 'search'
+  color: 'blue'
+runs:
+  using: 'node12'
+  main: 'index.js'
