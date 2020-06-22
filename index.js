@@ -32,7 +32,7 @@ async function run() {
         //const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar');
         //core.addPath(fodUploaderPath);
         //console.log(fodUploaderPath);
-        await exec.exe('ls');
+        await exec.exec('ls');
         await exec.exec('./FodUpload/FodUpload.jar -version');
 
 
