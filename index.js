@@ -38,7 +38,7 @@ async function run() {
             '-rp', remediation_scan_preference,
             '-pp', in_progress_scan_action,
             '-z', zip_location,
-            '-i', polling_interval
+            '-I', polling_interval
         ])
 
         const time = (new Date()).toTimeString();
