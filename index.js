@@ -22,7 +22,7 @@ try {
     console.log('bsi_token: ' + bsi_token);
     console.log('entitlement_preference: ' + entitlement_preference);
     console.log('remediation_scan_preference: ' + remediation_scan_preference);
-    console.log('in_progress_scan_action: ' + in_progress_scan_action'');
+    console.log('in_progress_scan_action: ' + in_progress_scan_action);
     console.log('zip_location: ' + zip_location);
     console.log('polling_interval: ' + polling_interval);
 
