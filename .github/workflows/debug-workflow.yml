@@ -14,12 +14,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - uses: fortify-community-plugins/fod-github-action@master
+      - uses: ./github/actions/debug-action
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
-          bsi_token: 'ENTER_YOUR_BSI_TOKEN'
+          bsi_token: ${{ secrets.BSI_TOKEN }}
           entitlement_preference: 'SubscriptionOnly'
           remediation_scan_preference: 'NonRemediationScanOnly'
           in_progress_scan_action: 'DoNotStartScan'
