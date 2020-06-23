@@ -120,7 +120,7 @@ async function run() {
             //execArray.push('-n', '"' + notes + '"');
         }
         if (polling_interval) {
-            //execArray.push('-I', polling_interval);
+            execArray.push('-I', polling_interval);
         }
         if (proxy_url) {
             execArray.push('-P', proxy_url, proxy_username, proxy_password, proxy_nt_domain, proxy_nt_workstation);
