@@ -86,8 +86,8 @@ async function run() {
         } else {
             console.log('Unknown credential type: ' + fod_credential_type)
         }
-        execArray.push('-portalurl', portal_uri);
-        execArray.push('-apiurl', api_uri);
+        execArray.push('-purl', portal_uri);
+        execArray.push('-aurl', api_uri);
         execArray.push('-rid', release_id);
         //execArray.push('-bsi', bsi_token_t);
         execArray.push('-z', zip_location_t);
