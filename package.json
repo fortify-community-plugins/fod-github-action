@@ -2,7 +2,7 @@
   "name": "fod-github-action",
   "version": "1.0.0",
   "description": "The Fortify on Demand GitHub action allows you to check if your code is secure.\r When a commit is triggered, [Fortify on Demand]() checks\r the quality of the source code according to your defined policies.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

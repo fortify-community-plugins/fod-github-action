@@ -1,8 +1,17 @@
+const { inspect } = require("util");
 const core = require('@actions/core');
 const github = require('@actions/github');
 const tc = require('@actions/tool-cache');
 const exec = require('@actions/exec');
 const io = require('@actions/io');
+
+function getSha() {
+    if (github.context.eventName == "pull_request") {
+        return github.context.payload.pull_request.head.sha;
+    } else {
+        return github.context.sha;
+    }
+}
 
 async function run() {
     try {
@@ -13,7 +22,16 @@ async function run() {
         //console.log('Event payload: ' + payload);
 
         // inputs
+
+        // GitHub passed inputs
         const repo_token = core.getInput('repo_token', { required: true });
+        const repository = core.getInput('repository');
+        const sha = core.getInput("sha");
+        const body = core.getInput("body");
+        const path = core.getInput("path");
+        const position = core.getInput("position");
+
+        // FOD specific inputs
         const fod_uploader_ver = core.getInput('fod_uploader_ver', { required: true });
         const fod_credential_type = core.getInput('fod_credential_type', { required: true });
         const fod_username = core.getInput('fod_username');
@@ -44,7 +62,7 @@ async function run() {
         const proxy_nt_domain = core.getInput('proxy_nt_domain');
         const proxy_nt_workstation = core.getInput('proxy_nt_workstation');
 
-        // log all the inputs
+        // log GitHub inputs
         console.log('repo_token' + repo_token);
         console.log('fod_uploader_ver: ' + fod_uploader_ver);
         console.log('fod_credential_type: ' + fod_credential_type);
@@ -72,17 +90,15 @@ async function run() {
         console.log('notes:' + notes);
         console.log('polling_interval: ' + polling_interval);
 
+        const [owner, repo] = repository.split("/");
+        const commit_sha = sha ? sha : getSha();
+        core.debug(`SHA: ${sha}`);
+
         const fodUploaderUrl = 'https://github.com/fod-dev/fod-uploader-java/releases/download/' + fod_uploader_ver + '/FodUpload.jar'
         console.log('Downloading FODUploader from: ' + fodUploaderUrl)
         const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
-        //const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
         core.addPath(fodUploaderPath)
         console.log('Downloaded.');
-
-        //const fod_access_key_t = '2da61711-c998-4f73-a090-543b500662c3';
-        //const fod_secret_key_t = 'SEBvaFJPT3QzOWU0T3dwV21-dVJyN0dxWWdHNF9C0';
-        //const bsi_token_t = 'eyJ0ZW5hbnRJZCI6MTM3LCJ0ZW5hbnRDb2RlIjoiZW1lYWRlbW8iLCJyZWxlYXNlSWQiOjU1ODA2LCJwYXlsb2FkVHlwZSI6IkFOQUxZU0lTX1BBWUxPQUQiLCJhc3Nlc3NtZW50VHlwZUlkIjoxMTcsInRlY2hub2xvZ3lUeXBlIjoiSlMvVFMvSFRNTCIsInRlY2hub2xvZ3lUeXBlSWQiOjE2LCJ0ZWNobm9sb2d5VmVyc2lvbiI6bnVsbCwidGVjaG5vbG9neVZlcnNpb25JZCI6bnVsbCwiYXVkaXRQcmVmZXJlbmNlIjoiTWFudWFsIiwiYXVkaXRQcmVmZXJlbmNlSWQiOjEsImluY2x1ZGVUaGlyZFBhcnR5IjpmYWxzZSwiaW5jbHVkZU9wZW5Tb3VyY2VBbmFseXNpcyI6ZmFsc2UsInBvcnRhbFVyaSI6Imh0dHBzOi8vZW1lYS5mb3J0aWZ5LmNvbSIsImFwaVVyaSI6Imh0dHBzOi8vYXBpLmVtZWEuZm9ydGlmeS5jb20iLCJzY2FuUHJlZmVyZW5jZSI6IlN0YW5kYXJkIiwic2NhblByZWZlcmVuY2VJZCI6MX0=';
-        //const zip_location_t = "fod_t.zip";
 
         let execArray = ['-jar', 'FodUpload.jar'];
         if (fod_credential_type === 'api') {
@@ -161,6 +177,17 @@ async function run() {
         let scanId = arr1[1];
         let arr2 = passStatusRegex.exec(scanOutput);
         let scanStatus = arr2[1];
+
+        const octokit = github.getOctokit(repo_token);
+
+        await octokit.repos.createCommitComment({
+            owner: owner,
+            repo: repository,
+            commit_sha: commit_sha,
+            body: body,
+            path: path,
+            position: position
+        });
 
         core.setOutput("scanId", scanId);
         core.setOutput("scanStatus", scanStatus)

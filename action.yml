@@ -54,9 +54,15 @@ inputs:
     description: 'Interval between checking scan status in minutes.'
     required: true
     default: '5'
+  commit_comment:
+    description: 'Add a comment to the GitHub comment with FOD scan details.'
+    default: false
+  pr_comment:
+    description: 'Add a comment to the pull request with FOD scan details.'
+    default: false
 branding:
   icon: 'search'
   color: 'blue'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'src/index.js'
