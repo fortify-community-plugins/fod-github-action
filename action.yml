@@ -2,7 +2,7 @@ name: 'Fortify on Demand GitHub action'
 description: 'Upload your code to Fortify on Demand and run static analysis to check for vulnerabilities.'
 inputs:
   repo_token:
-    description: 'Token to checkout the repository.'
+    description: 'Token required to access the repository.'
     required: true
   fod_uploader_ver:
     description: 'Version of FOD Uploader program to use.'

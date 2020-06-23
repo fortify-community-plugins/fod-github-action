@@ -41,7 +41,7 @@ jobs:
       id: fod
       uses: fod-community-plugins/fod-github-action@master
       with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
           bsi_token: ${{ secrets.BSI_TOKEN }}
