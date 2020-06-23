@@ -60,6 +60,11 @@ inputs:
   pr_comment:
     description: 'Add a comment to the pull request with FOD scan details.'
     default: false
+outputs:
+  scan_id:
+    description: 'The id of the scan executed in FOD.'
+  scan_status:
+    description: 'The status (passed/failed) of the scan.'
 branding:
   icon: 'search'
   color: 'blue'
