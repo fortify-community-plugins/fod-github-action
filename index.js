@@ -8,6 +8,10 @@ async function run() {
     try {
         console.log("Fortify on Demand GitHub Action")
 
+        // Get the JSON webhook payload for the event that triggered the workflow
+        //const payload = JSON.stringify(github.context.payload, undefined, 2)
+        //console.log('Event payload: ' + payload);
+
         // inputs
         const fod_uploader_ver = core.getInput('fod_uploader_ver', { required: true });
         const fod_credential_type = core.getInput('fod_credential_type', { required: true });
@@ -127,31 +131,36 @@ async function run() {
         }
         console.log('Running FodUpload.jar with commandline: ' + execArray.toString());
 
-        let myOutput = '';
-        let myError = '';
+        let scanOutput = '';
+        let scanError = '';
 
         const options = {};
         options.listeners = {
             stdout: (data) => {
-                myOutput += data.toString();
+                scanOutput += data.toString();
             },
             stderr: (data) => {
-                myError += data.toString();
+                scanError += data.toString();
             }
         };
-        //options.cwd = '.';
 
+        // execute FodUpload
         await exec.exec('java', execArray, options);
 
-        console.log('Output:')
-        console.log(myOutput);
+        // remove not important lines
+        scanOutput = scanOutput.replace("Authenticating\n", "");
+        scanOutput = scanOutput.replace("Retiring Token : Token Retired Successfully\n", "");
 
-        //const time = (new Date()).toTimeString();
-        //core.setOutput("time", time);
+        // extract scan id and status
+        let scanIdRegex = /\nScan (.*) uploaded (.*)\n/g;
+        let passStatusRegex = /\nPass\/Fail status: (.*)\n/g;
+        let arr1 = scanIdRegex.exec(scanOutput);
+        let scanId = arr1[1];
+        let arr2 = passStatusRegex.exec(scanOutput);
+        let scanStatus = arr2[1];
 
-        // Get the JSON webhook payload for the event that triggered the workflow
-        //const payload = JSON.stringify(github.context.payload, undefined, 2)
-        //console.log('The event payload: ' + payload);
+        core.setOutput("scanId", scanId);
+        core.setOutput("scanStatus", scanStatus)
 
     } catch (error) {
         core.setFailed(error.message);
