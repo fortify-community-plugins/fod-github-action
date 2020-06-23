@@ -1,4 +1,4 @@
-name: FOD GitHub Action Test
+name: FOD GitHub Action (Debug)
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Debug
+    name: Static Analysis
     steps:
       - uses: actions/checkout@v2
         with:
@@ -25,7 +25,7 @@ jobs:
           dest: fod.zip
       - uses: fortify-community-plugins/fod-github-action@master
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          fod_credential_type: 'api'
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
           bsi_token: ${{ secrets.BSI_TOKEN }}
@@ -34,3 +34,4 @@ jobs:
           in_progress_scan_action: 'DoNotStartScan'
           zip_location: 'fod.zip'
           polling_interval: '5'
+          notes: 'Test Scan'

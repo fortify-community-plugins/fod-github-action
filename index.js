@@ -9,44 +9,117 @@ async function run() {
         console.log("Fortify on Demand GitHub Action")
 
         // inputs
-        const repo_token = core.getInput('repo_token');
+        const fod_uploader_ver = core.getInput('fod_uploader_ver');
+        const fod_credential_type = core.getInput('fod_credential_type');
+        const fod_username = core.getInput('fod_username');
+        const fod_password = core.getInput('fod_password');
         const fod_access_key = core.getInput('fod_access_key');
         const fod_secret_key = core.getInput('fod_secret_key');
         const bsi_token = core.getInput('bsi_token');
         const entitlement_preference = core.getInput('entitlement_preference');
+        const zip_location = core.getInput('zip_location');
+
         const remediation_scan_preference = core.getInput('remediation_scan_preference');
         const in_progress_scan_action = core.getInput('in_progress_scan_action');
-        const zip_location = core.getInput('zip_location');
-        const polling_interval = core.getInput('polling_interval');
+        const audit_preference_id = core.getInput('audit_preference_id');
+        const include_third_party_apps = core.getInput('include_third_party_apps');
+        const is_bundled_assessment = core.getInput('is_bundled_assessment');
+        const is_remediation_scan = core.getInput('is_remediation_scan');
+        const purchase_entitlement = core.getInput('purchase_entitlement');
+        const run_open_source_scan = core.getInput('run_open_source_scan');
+        const notes = core.getInput('notes');
 
-        console.log('fod_access_key: ' + fod_access_key);
-        console.log('fod_secret_key: ' + fod_secret_key);
+        const polling_interval = core.getInput('polling_interval');
+        const proxy_url = core.getInput('proxy_url');
+        const proxy_username = core.getInput('proxy_username');
+        const proxy_password = core.getInput('proxy_password');
+        const proxy_nt_domain = core.getInput('proxy_nt_domain');
+        const proxy_nt_workstation = core.getInput('proxy_nt_workstation');
+
+        console.log('fod_uploader_ver: ' + fod_uploader_ver);
+        console.log('fod_credential_type: ' + fod_credential_type);
+        if (fod_credential_type === 'api') {
+            console.log('fod_access_key: ' + fod_access_key);
+            console.log('fod_secret_key: ' + fod_secret_key);
+        } else if (fod_credential_type === 'user') {
+            console.log('fod_username: ' + fod_username)
+            console.log('fod_password: ' + fod_password)
+        } else {
+            throw 'Unknown credential type: ' + fod_credential_type
+        }
         console.log('bsi_token: ' + bsi_token);
         console.log('entitlement_preference: ' + entitlement_preference);
+        console.log('zip_location: ' + zip_location);
+
         console.log('remediation_scan_preference: ' + remediation_scan_preference);
         console.log('in_progress_scan_action: ' + in_progress_scan_action);
-        console.log('zip_location: ' + zip_location);
+        console.log('audit_preference_id: ', audit_preference_id);
+        console.log('include_third_party_apps: ' + include_third_party_apps);
+        console.log('is_bundled_assessment: ' + is_bundled_assessment);
+        console.log('is_remediation_scan: ' + is_remediation_scan);
+        console.log('purchase_entitlement: ' + purchase_entitlement);
+        console.log('run_open_source_scan:' + run_open_source_scan);
+        console.log('notes:' + notes);
         console.log('polling_interval: ' + polling_interval);
 
-        console.log('Downloading FODUploader...')
-        const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
-        console.log(fodUploaderPath)
-        await exec.exec('java', ['-jar', "FodUpload.jar",
-            '-ac', fod_access_key, fod_secret_key,
-            '-bsi', bsi_token,
-            '-ep', entitlement_preference,
-            '-rp', remediation_scan_preference,
-            '-pp', in_progress_scan_action,
-            '-z', zip_location,
-            '-I', polling_interval
-        ])
+        const fodUploaderUrl = 'https://github.com/fod-dev/fod-uploader-java/releases/download/' + fod_uploader_ver + '/FodUpload.jar'
+        console.log('Downloading FODUploader from: ' + fodUploaderUrl)
+        const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
 
-        const time = (new Date()).toTimeString();
-        core.setOutput("time", time);
+        var execArray = ['-jar', 'FodUpload.jar'];
+        if (fod_credential_type === 'apiCredentials') {
+            execArray.push('-ac', fod_access_key, fod_secret_key);
+        } else if (fod_credential_type === 'userCredentials') {
+            execArray.push('-uc', fod_username, fod_password)
+        } else {
+            throw 'Unknown credential type: ' + fod_credential_type
+        }
+        execArray.push('-bsi', bsi_token);
+        execArray.push('-z', zip_location);
+        execArray.push('-ep', entitlement_preference);
+
+        if (audit_preference_id) {
+            execArray.push('-a', audit_preference_id);
+        }
+        if (remediation_scan_preference) {
+            execArray.push('-rp', remediation_scan_preference);
+        }
+        if (in_progress_scan_action) {
+            execArray.push('-pp', in_progress_scan_action);
+        }
+        if (include_third_party_apps) {
+            execArray.push('-itp', include_third_party_apps);
+        }
+        if (is_bundled_assessment) {
+            execArray.push('-b', is_bundled_assessment);
+        }
+        if (is_remediation_scan) {
+            execArray.push('-r', is_remediation_scan);
+        }
+        if (purchase_entitlement) {
+            execArray.push('-purchase', purchase_entitlement);
+        }
+        if (run_open_source_scan) {
+            execArray.push('os', run_open_source_scan);
+        }
+        if (notes) {
+            execArray.push('-n', notes);
+        }
+        if (polling_interval) {
+            execArray.push('-I', polling_interval);
+        }
+        if (proxy_url) {
+            execArray.push('-P', proxy_url, proxy_username, proxy_password, proxy_nt_domain, proxy_nt_workstation);
+        }
+        console.log('Running FodUpload.jar with commandline: ' + execArray.toString());
+        await exec.exec('java', execArray);
+
+        //const time = (new Date()).toTimeString();
+        //core.setOutput("time", time);
 
         // Get the JSON webhook payload for the event that triggered the workflow
-        const payload = JSON.stringify(github.context.payload, undefined, 2)
-        console.log('The event payload: ' + payload);
+        //const payload = JSON.stringify(github.context.payload, undefined, 2)
+        //console.log('The event payload: ' + payload);
 
     } catch (error) {
         core.setFailed(error.message);
