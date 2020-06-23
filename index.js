@@ -75,7 +75,7 @@ async function run() {
         const zip_location_t = "fod_t.zip";
 
         const portal_uri = 'https://emea.fortify.com/';
-        const api_uri = 'https://api.ams.fotify.com/';
+        const api_uri = 'https://api.emea.fortify.com/';
         const release_id = '55806';
 
         let execArray = ['-jar', 'FodUpload.jar'];
@@ -86,7 +86,7 @@ async function run() {
         } else {
             console.log('Unknown credential type: ' + fod_credential_type)
         }
-        execArray.push('-purl', portal_uri);
+        //execArray.push('-purl', portal_uri);
         execArray.push('-aurl', api_uri);
         execArray.push('-rid', release_id);
         //execArray.push('-bsi', bsi_token_t);
