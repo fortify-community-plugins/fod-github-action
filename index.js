@@ -68,8 +68,9 @@ async function run() {
         //const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
         const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
         core.addPath(fodUploaderPath)
+        console.log('Downloaded.');
 
-        var execArray = ['-jar', 'FodUpload.jar'];
+        let execArray = ['-jar', 'FodUpload.jar'];
         if (fod_credential_type === 'apiCredentials') {
             execArray.push('-ac', fod_access_key, fod_secret_key);
         } else if (fod_credential_type === 'userCredentials') {
