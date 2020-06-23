@@ -77,7 +77,6 @@ async function run() {
         } else {
             console.log('Unknown credential type: ' + fod_credential_type)
         }
-        console.log('here');
         execArray.push('-bsi', bsi_token);
         execArray.push('-z', zip_location);
         execArray.push('-ep', entitlement_preference);
@@ -107,7 +106,7 @@ async function run() {
             execArray.push('os', run_open_source_scan);
         }
         if (notes) {
-            execArray.push('-n', notes);
+            execArray.push('-n', '"' + notes + '"');
         }
         if (polling_interval) {
             execArray.push('-I', polling_interval);
