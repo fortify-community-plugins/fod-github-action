@@ -45,12 +45,11 @@ async function run() {
             console.log('fod_username: ' + fod_username)
             console.log('fod_password: ' + fod_password)
         } else {
-            throw 'Unknown credential type: ' + fod_credential_type
+            console.log('Unknown credential type: ' + fod_credential_type)
         }
         console.log('bsi_token: ' + bsi_token);
         console.log('entitlement_preference: ' + entitlement_preference);
         console.log('zip_location: ' + zip_location);
-
 
         console.log('remediation_scan_preference: ' + remediation_scan_preference);
         console.log('in_progress_scan_action: ' + in_progress_scan_action);
@@ -71,13 +70,12 @@ async function run() {
         console.log('Downloaded.');
 
         let execArray = ['-jar', 'FodUpload.jar'];
-        if (fod_credential_type.toString().equals('"apiCredentials')) {
+        if (fod_credential_type === 'api') {
             execArray.push('-ac', fod_access_key, fod_secret_key);
-        } else if (fod_credential_type.toString().equals('userCredentials')) {
+        } else if (fod_credential_type === 'user') {
             execArray.push('-uc', fod_username, fod_password)
         } else {
             console.log('Unknown credential type: ' + fod_credential_type)
-            throw 'Unknown credential type: ' + fod_credential_type
         }
         console.log('here');
         execArray.push('-bsi', bsi_token);
