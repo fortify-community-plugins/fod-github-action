@@ -130,7 +130,7 @@ async function run() {
         let myOutput = '';
         let myError = '';
 
-        /*const options = {};
+        const options = {};
         options.listeners = {
             stdout: (data: Buffer) => {
                 myOutput += data.toString();
@@ -138,7 +138,7 @@ async function run() {
             stderr: (data: Buffer) => {
                 myError += data.toString();
             }
-        };*/
+        };
         //options.cwd = '.';
 
         await exec.exec('java', execArray);

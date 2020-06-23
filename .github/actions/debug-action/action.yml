@@ -50,7 +50,7 @@ inputs:
   polling_interval:
     description: 'Interval between checking scan status in minutes'
     required: true
-    default: '5'
+    default: '2'
 branding:
   icon: 'search'
   color: 'blue'
