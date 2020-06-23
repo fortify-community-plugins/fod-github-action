@@ -15,13 +15,15 @@ function getSha() {
 
 async function run() {
     try {
-        console.log("Fortify on Demand GitHub Action")
+        core.info("Fortify on Demand GitHub Action")
 
         // Get the JSON webhook payload for the event that triggered the workflow
         //const payload = JSON.stringify(github.context.payload, undefined, 2)
-        //console.log('Event payload: ' + payload);
+        //core.info('Event payload: ' + payload);
 
-        // inputs
+        //
+        // Inputs
+        //
 
         // GitHub passed inputs
         const repo_token = core.getInput('repo_token', { required: true });
@@ -44,7 +46,6 @@ async function run() {
         //const release_id = core.getInput('release_is');
         const entitlement_preference = core.getInput('entitlement_preference', { required: true });
         const zip_location = core.getInput('zip_location', { required: true });
-
         const remediation_scan_preference = core.getInput('remediation_scan_preference');
         const in_progress_scan_action = core.getInput('in_progress_scan_action');
         const audit_preference_id = core.getInput('audit_preference_id');
@@ -54,51 +55,53 @@ async function run() {
         const purchase_entitlement = core.getInput('purchase_entitlement');
         const run_open_source_scan = core.getInput('run_open_source_scan');
         const notes = core.getInput('notes');
-
         const polling_interval = core.getInput('polling_interval');
         const proxy_url = core.getInput('proxy_url');
         const proxy_username = core.getInput('proxy_username');
         const proxy_password = core.getInput('proxy_password');
         const proxy_nt_domain = core.getInput('proxy_nt_domain');
         const proxy_nt_workstation = core.getInput('proxy_nt_workstation');
-
-        // log GitHub inputs
-        console.log('repo_token' + repo_token);
-        console.log('fod_uploader_ver: ' + fod_uploader_ver);
-        console.log('fod_credential_type: ' + fod_credential_type);
+        const commit_comment = core.getInput('commit_comment');
+        const pr_comment = core.getInput('pr_comment');
+        
+        // log inputs
+        core.debug('repo_token: ' + repo_token);
+        core.debug('fod_uploader_ver: ' + fod_uploader_ver);
+        core.debug('fod_credential_type: ' + fod_credential_type);
         if (fod_credential_type === 'api') {
-            console.log('fod_access_key: ' + fod_access_key);
-            console.log('fod_secret_key: ' + fod_secret_key);
+            core.debug('fod_access_key: ' + fod_access_key);
+            core.debug('fod_secret_key: ' + fod_secret_key);
         } else if (fod_credential_type === 'user') {
-            console.log('fod_username: ' + fod_username)
-            console.log('fod_password: ' + fod_password)
+            core.debug('fod_username: ' + fod_username)
+            core.debug('fod_password: ' + fod_password)
         } else {
-            console.log('Unknown credential type: ' + fod_credential_type)
+            core.info('Unknown credential type: ' + fod_credential_type)
         }
-        console.log('bsi_token: ' + bsi_token);
-        console.log('entitlement_preference: ' + entitlement_preference);
-        console.log('zip_location: ' + zip_location);
-
-        console.log('remediation_scan_preference: ' + remediation_scan_preference);
-        console.log('in_progress_scan_action: ' + in_progress_scan_action);
-        console.log('audit_preference_id: ', audit_preference_id);
-        console.log('include_third_party_apps: ' + include_third_party_apps);
-        console.log('is_bundled_assessment: ' + is_bundled_assessment);
-        console.log('is_remediation_scan: ' + is_remediation_scan);
-        console.log('purchase_entitlement: ' + purchase_entitlement);
-        console.log('run_open_source_scan:' + run_open_source_scan);
-        console.log('notes:' + notes);
-        console.log('polling_interval: ' + polling_interval);
+        core.debug('bsi_token: ' + bsi_token);
+        core.debug('entitlement_preference: ' + entitlement_preference);
+        core.debug('zip_location: ' + zip_location);
+        core.debug('remediation_scan_preference: ' + remediation_scan_preference);
+        core.debug('in_progress_scan_action: ' + in_progress_scan_action);
+        core.debug('audit_preference_id: ', audit_preference_id);
+        core.debug('include_third_party_apps: ' + include_third_party_apps);
+        core.debug('is_bundled_assessment: ' + is_bundled_assessment);
+        core.debug('is_remediation_scan: ' + is_remediation_scan);
+        core.debug('purchase_entitlement: ' + purchase_entitlement);
+        core.debug('run_open_source_scan:' + run_open_source_scan);
+        core.debug('notes:' + notes);
+        core.debug('polling_interval: ' + polling_interval);
+        core.debug('commit_comment: ' + commit_comment);
+        core.debug('pr_comment: ' + pr_comment);
 
         const [owner, repo] = repository.split("/");
         const commit_sha = sha ? sha : getSha();
-        core.debug(`SHA: ${sha}`);
+        core.debug(`SHA: ${commit_sha}`);
 
         const fodUploaderUrl = 'https://github.com/fod-dev/fod-uploader-java/releases/download/' + fod_uploader_ver + '/FodUpload.jar'
-        console.log('Downloading FODUploader from: ' + fodUploaderUrl)
+        core.info('Downloading FODUploader from: ' + fodUploaderUrl)
         const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
         core.addPath(fodUploaderPath)
-        console.log('Downloaded.');
+        core.info('Downloaded.');
 
         let execArray = ['-jar', 'FodUpload.jar'];
         if (fod_credential_type === 'api') {
@@ -106,7 +109,7 @@ async function run() {
         } else if (fod_credential_type === 'user') {
             execArray.push('-uc', fod_username, fod_password)
         } else {
-            console.log('Unknown credential type: ' + fod_credential_type)
+            core.info('Unknown credential type: ' + fod_credential_type)
         }
         //execArray.push('-purl', portal_uri);
         //execArray.push('-aurl', api_uri);
@@ -148,7 +151,12 @@ async function run() {
         if (proxy_url) {
             execArray.push('-P', proxy_url, proxy_username, proxy_password, proxy_nt_domain, proxy_nt_workstation);
         }
-        console.log('Running FodUpload.jar with commandline: ' + execArray.toString());
+
+        //
+        // Execution
+        //
+
+        core.debug('Running FodUpload.jar with commandline: ' + execArray.toString());
 
         let scanOutput = '';
         let scanError = '';
@@ -180,14 +188,21 @@ async function run() {
 
         const octokit = github.getOctokit(repo_token);
 
-        await octokit.repos.createCommitComment({
-            owner: owner,
-            repo: repository,
-            commit_sha: commit_sha,
-            body: body,
-            path: path,
-            position: position
-        });
+        if (commit_comment) {
+            core.info('Adding FOD scan details to commit.')
+            await octokit.repos.createCommitComment({
+                owner: owner,
+                repo: repository,
+                commit_sha: commit_sha,
+                body: body,
+                path: path,
+                position: position
+            });
+        }
+
+        //
+        // Outputs
+        //
 
         core.setOutput("scanId", scanId);
         core.setOutput("scanStatus", scanStatus)
