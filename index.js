@@ -88,7 +88,7 @@ async function run() {
         //execArray.push('-purl', portal_uri);
         //execArray.push('-aurl', api_uri);
         //execArray.push('-rid', release_id);
-        execArray.push('-bsi', '"' + bsi_token_t + '"');
+        execArray.push('-bsi', '"' + bsi_token + '"');
         execArray.push('-z', zip_location_t);
         execArray.push('-ep', entitlement_preference);
 
