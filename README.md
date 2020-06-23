@@ -35,21 +35,22 @@ on: [push]
 jobs:
   check-quality:
     runs-on: ubuntu-latest
-    name: A job to check my code quality
+    name: Fortify on Demand
     steps:
-    - name: Check code is secure
+    - name: Static Analysis
       id: fod
       uses: fod-community-plugins/fod-github-action@master
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
-        fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
-        bsi_token: 'ENTER_YOUR_BSI_TOKEN'
-        entitlement_preference: 'SubscriptionOnly'
-        remediation_scan_preference: 'NonRemediationScanOnly'
-        in_progress_scan_action: 'DoNotStartScan'
-        zip_location: '/upload/fod.zip'
-        polling_interval: '5'
+          fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
+          fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
+          bsi_token: ${{ secrets.BSI_TOKEN }}
+          entitlement_preference: 'SubscriptionOnly'
+          remediation_scan_preference: 'NonRemediationScanOnly'
+          in_progress_scan_action: 'DoNotStartScan'
+          audit_preference_id: 'Automated'
+          zip_location: 'fod.zip'
+          polling_interval: '5'
+          notes: 'Test Scan'
 ```
 
 The following parameters should *NOT* be changed:

@@ -13,6 +13,7 @@ async function run() {
         //console.log('Event payload: ' + payload);
 
         // inputs
+        const repo_token = core.getInput('repo_token', { required: true });
         const fod_uploader_ver = core.getInput('fod_uploader_ver', { required: true });
         const fod_credential_type = core.getInput('fod_credential_type', { required: true });
         const fod_username = core.getInput('fod_username');
@@ -43,6 +44,8 @@ async function run() {
         const proxy_nt_domain = core.getInput('proxy_nt_domain');
         const proxy_nt_workstation = core.getInput('proxy_nt_workstation');
 
+        // log all the inputs
+        console.log('repo_token' + repo_token);
         console.log('fod_uploader_ver: ' + fod_uploader_ver);
         console.log('fod_credential_type: ' + fod_credential_type);
         if (fod_credential_type === 'api') {
@@ -76,10 +79,10 @@ async function run() {
         core.addPath(fodUploaderPath)
         console.log('Downloaded.');
 
-        const fod_access_key_t = '2da61711-c998-4f73-a090-543b500662c3';
-        const fod_secret_key_t = 'SEBvaFJPT3QzOWU0T3dwV21-dVJyN0dxWWdHNF9C0';
-        const bsi_token_t = 'eyJ0ZW5hbnRJZCI6MTM3LCJ0ZW5hbnRDb2RlIjoiZW1lYWRlbW8iLCJyZWxlYXNlSWQiOjU1ODA2LCJwYXlsb2FkVHlwZSI6IkFOQUxZU0lTX1BBWUxPQUQiLCJhc3Nlc3NtZW50VHlwZUlkIjoxMTcsInRlY2hub2xvZ3lUeXBlIjoiSlMvVFMvSFRNTCIsInRlY2hub2xvZ3lUeXBlSWQiOjE2LCJ0ZWNobm9sb2d5VmVyc2lvbiI6bnVsbCwidGVjaG5vbG9neVZlcnNpb25JZCI6bnVsbCwiYXVkaXRQcmVmZXJlbmNlIjoiTWFudWFsIiwiYXVkaXRQcmVmZXJlbmNlSWQiOjEsImluY2x1ZGVUaGlyZFBhcnR5IjpmYWxzZSwiaW5jbHVkZU9wZW5Tb3VyY2VBbmFseXNpcyI6ZmFsc2UsInBvcnRhbFVyaSI6Imh0dHBzOi8vZW1lYS5mb3J0aWZ5LmNvbSIsImFwaVVyaSI6Imh0dHBzOi8vYXBpLmVtZWEuZm9ydGlmeS5jb20iLCJzY2FuUHJlZmVyZW5jZSI6IlN0YW5kYXJkIiwic2NhblByZWZlcmVuY2VJZCI6MX0=';
-        const zip_location_t = "fod_t.zip";
+        //const fod_access_key_t = '2da61711-c998-4f73-a090-543b500662c3';
+        //const fod_secret_key_t = 'SEBvaFJPT3QzOWU0T3dwV21-dVJyN0dxWWdHNF9C0';
+        //const bsi_token_t = 'eyJ0ZW5hbnRJZCI6MTM3LCJ0ZW5hbnRDb2RlIjoiZW1lYWRlbW8iLCJyZWxlYXNlSWQiOjU1ODA2LCJwYXlsb2FkVHlwZSI6IkFOQUxZU0lTX1BBWUxPQUQiLCJhc3Nlc3NtZW50VHlwZUlkIjoxMTcsInRlY2hub2xvZ3lUeXBlIjoiSlMvVFMvSFRNTCIsInRlY2hub2xvZ3lUeXBlSWQiOjE2LCJ0ZWNobm9sb2d5VmVyc2lvbiI6bnVsbCwidGVjaG5vbG9neVZlcnNpb25JZCI6bnVsbCwiYXVkaXRQcmVmZXJlbmNlIjoiTWFudWFsIiwiYXVkaXRQcmVmZXJlbmNlSWQiOjEsImluY2x1ZGVUaGlyZFBhcnR5IjpmYWxzZSwiaW5jbHVkZU9wZW5Tb3VyY2VBbmFseXNpcyI6ZmFsc2UsInBvcnRhbFVyaSI6Imh0dHBzOi8vZW1lYS5mb3J0aWZ5LmNvbSIsImFwaVVyaSI6Imh0dHBzOi8vYXBpLmVtZWEuZm9ydGlmeS5jb20iLCJzY2FuUHJlZmVyZW5jZSI6IlN0YW5kYXJkIiwic2NhblByZWZlcmVuY2VJZCI6MX0=';
+        //const zip_location_t = "fod_t.zip";
 
         let execArray = ['-jar', 'FodUpload.jar'];
         if (fod_credential_type === 'api') {

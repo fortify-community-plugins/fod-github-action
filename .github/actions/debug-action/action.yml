@@ -1,56 +1,59 @@
 name: 'Fortify on Demand GitHub action'
 description: 'Upload your code to Fortify on Demand and run static analysis to check for vulnerabilities.'
 inputs:
+  repo_token:
+    description: 'Token to checkout the repository.'
+    required: true
   fod_uploader_ver:
-    description: 'Version of FOD Uploader program to use'
+    description: 'Version of FOD Uploader program to use.'
     default: 'v4.0.4'
   fod_credential_type:
-    description: 'FOD Credential type to use: api/API credentials or user/Username credentials'
+    description: 'FOD Credential type to use: api/API credentials or user/Username credentials.'
     default: 'api'
     required: true
   fod_access_key:
-    description: 'API Access key for Fortify on Demand'
+    description: 'API Access key for Fortify on Demand.'
   fod_secret_key:
-    description: 'API Secret key for Fortify on Demand'
+    description: 'API Secret key for Fortify on Demand.'
   fod_username:
-    description: 'Username for Fortify on Demand'
+    description: 'Username for Fortify on Demand.'
   fod_password:
-    description: 'Password for Fortify on Demand'
+    description: 'Password for Fortify on Demand.'
   bsi_token:
-    description: 'Build server token'
+    description: 'Build server token.'
     required: true
   entitlement_preference:
-    description: 'Whether to use a single scan or subscription assessment: 1/SingleScanOnly, 2/SubscriptionOnly, 3/SingleScanFirstThenSubscription, 4/SubscriptionFirstThenSingleScan'
+    description: 'Whether to use a single scan or subscription assessment, options are: 1/SingleScanOnly, 2/SubscriptionOnly, 3/SingleScanFirstThenSubscription, 4/SubscriptionFirstThenSingleScan.'
     required: true
     default: 'SubscriptionOnly'
   zip_location:
-    description: 'Location of Zip file containing source to scan'
+    description: 'Location of Zip file containing source to scan.'
     required: true
     default: 'fod.zip'
   remediation_scan_preference:
-    description: 'Whether to run a remediation scan: 0/RemediationScanIfAvailable, 1/RemediationScanOnly, 2/NonRemediationScanOnly'
+    description: 'Whether to run a remediation scan, options are: 0/RemediationScanIfAvailable, 1/RemediationScanOnly, 2/NonRemediationScanOnly.'
     default: 'NonRemediationScanOnly'
   in_progress_scan_action:
-    description: 'Whether to cancel an in-progress scan and start a new scan or not start a scan: 0/DoNotStartScan, 1/CancelScanInProgress'
+    description: 'Whether to cancel an in-progress scan and start a new scan or not start a scan, options are: 0/DoNotStartScan, 1/CancelScanInProgress.'
   audit_preference_id:
-    description: 'False positive audit type: 1/Manual, 2/Automated'
+    description: 'False positive audit type, options are: 1/Manual, 2/Automated.'
   include_third_party_apps:
-    description: 'Whether to include third party libraries'
+    description: 'Whether to include third party libraries.'
   is_bundled_assessment:
-    description: 'Whether the scan is a bundled assessment'
+    description: 'Whether the scan is a bundled assessment.'
   is_remediation_scan:
-    description: 'Whether the scan is in remediation'
+    description: 'Whether the scan is in remediation.'
   purchase_entitlement:
-    description: 'Whether to purchase an entitlement if available'
+    description: 'Whether to purchase an entitlement if available.'
   run_open_source_scan:
-    description: 'Whether to run an Open Source Scan'
+    description: 'Whether to run an Open Source Scan.'
   notes:
-    description: 'Notes about the scan'
+    description: 'Notes about the scan.'
     default: 'Run from GitHub Action'
   polling_interval:
-    description: 'Interval between checking scan status in minutes'
+    description: 'Interval between checking scan status in minutes.'
     required: true
-    default: '2'
+    default: '1'
 branding:
   icon: 'search'
   color: 'blue'
