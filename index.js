@@ -132,16 +132,16 @@ async function run() {
 
         const options = {};
         options.listeners = {
-            stdout: (data: Buffer) => {
+            stdout: (data) => {
                 myOutput += data.toString();
             },
-            stderr: (data: Buffer) => {
+            stderr: (data) => {
                 myError += data.toString();
             }
         };
         //options.cwd = '.';
 
-        await exec.exec('java', execArray);
+        await exec.exec('java', execArray, options);
 
         console.log('Output:')
         console.log(myOutput);
