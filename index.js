@@ -71,8 +71,8 @@ async function run() {
 
         const fodUploaderUrl = 'https://github.com/fod-dev/fod-uploader-java/releases/download/' + fod_uploader_ver + '/FodUpload.jar'
         console.log('Downloading FODUploader from: ' + fodUploaderUrl)
-        //const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
-        const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
+        const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
+        //const fodUploaderPath = await tc.downloadTool('https://github.com/fod-dev/fod-uploader-java/releases/download/v4.0.4/FodUpload.jar', 'FodUpload.jar');
         core.addPath(fodUploaderPath)
         console.log('Downloaded.');
 
