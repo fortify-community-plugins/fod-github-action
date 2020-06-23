@@ -30,7 +30,7 @@ jobs:
           in_progress_scan_action: 'DoNotStartScan'
           audit_preference_id: 'Automated'
           zip_location: 'fod.zip'
-          polling_interval: '5'
+          polling_interval: '1'
           notes: 'Test Scan'
           commit_comment: true
           pr_comment: true
