@@ -41,6 +41,7 @@ jobs:
       id: fod
       uses: fod-community-plugins/fod-github-action@master
       with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
           bsi_token: ${{ secrets.BSI_TOKEN }}
@@ -55,7 +56,7 @@ jobs:
 
 The following parameters should *NOT* be changed:
 
- * **repo_token**: this is how Fortify on Demand can access your repository
+ * **repo_token**: this is created automatically and is how the Action can access your repository
  * **fod_access_key** and **fod_access_key**: this is how the action can communicate with Fortify on Demand.
 
 The following parameters can be changed:

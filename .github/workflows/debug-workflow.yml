@@ -25,6 +25,7 @@ jobs:
           dest: fod.zip
       - uses: fortify-community-plugins/fod-github-action@master
         with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           fod_credential_type: 'api'
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
