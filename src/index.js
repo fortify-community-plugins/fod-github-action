@@ -176,26 +176,11 @@ async function run() {
         };
 
         // execute FodUpload
-        //await exec.exec('java', execArray, options);
-        scanOutput = `
-Authenticating
-Beginning upload
-Upload Status - Bytes sent:2171
-Scan 331411 uploaded successfully. Total bytes sent: 2171
-Poll Status: Completed
-Number of criticals: 0
-Number of highs: 0
-Number of mediums: 0
-Number of lows: 0
-For application status details see the customer portal: 
-https://emea.fortify.com/Redirect/Releases/55806
-Pass/Fail status: Passed
-Retiring Token : Token Retired Successfully        
-        `
+        await exec.exec('java', execArray, options);
 
         // remove not important lines
-        scanOutput = scanOutput.replace("Authenticating\n", "");
-        scanOutput = scanOutput.replace("Retiring Token : Token Retired Successfully\n", "");
+        scanOutput = scanOutput.replace("Authenticating", "");
+        scanOutput = scanOutput.replace("Retiring Token : Token Retired Successfully", "");
 
         // extract scan id and status
         let scanIdRegex = /\nScan (.*) uploaded (.*)\n/g;
@@ -220,16 +205,17 @@ Retiring Token : Token Retired Successfully
         if (pr_comment) {
             const pr = github.context.payload.pull_request;
             if (!pr) {
-                core.setFailed('github.context.payload.pull_request not exist');
+                core.warning('This is not a pull request, ignoring comment!');
                 return;
+            } else {
+                core.info('Adding FOD scan details to Pull Request.')
+                await octokit.issues.createComment({
+                    owner: owner,
+                    repo: repo,
+                    issue_number: pr.number,
+                    body: scanOutput
+                });
             }
-            core.info('Adding FOD scan details to Pull Request.')
-            await octokit.issues.createComment({
-                owner: owner,
-                repo: repo,
-                issue_number: pr.number,
-                body: scanOutput
-            });
         }
 
         //
