@@ -181,6 +181,7 @@ async function run() {
         // remove not important lines
         scanOutput = scanOutput.replace("Authenticating", "");
         scanOutput = scanOutput.replace("Retiring Token : Token Retired Successfully", "");
+        scanOutput = scanOutput.repeat("Poll Status: In Progress", "")
 
         // extract scan id and status
         let scanIdRegex = /\nScan (.*) uploaded (.*)\n/g;
@@ -205,7 +206,7 @@ async function run() {
         if (pr_comment) {
             const pr = github.context.payload.pull_request;
             if (!pr) {
-                core.warning('This is not a pull request, ignoring comment!');
+                core.warning('This is not a pull request, ignoring request to comment on it!');
                 return;
             } else {
                 core.info('Adding FOD scan details to Pull Request.')

@@ -33,4 +33,4 @@ jobs:
           polling_interval: '1'
           notes: 'Test Scan'
           commit_comment: true
-          pr_comment: true
+          pr_comment: false
