@@ -124,7 +124,7 @@ async function run() {
             execArray.push('os', run_open_source_scan);
         }
         if (notes) {
-            //execArray.push('-n', '"' + notes + '"');
+            execArray.push('-notes', '"' + notes + '"');
         }
         if (polling_interval) {
             execArray.push('-I', polling_interval);
