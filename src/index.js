@@ -68,10 +68,6 @@ async function run() {
         core.debug('repo_token: ' + repo_token);
         core.debug('repository: ' + repository);
         core.debug('sha: ' + sha);
-        core.debug('body: ' + body);
-        core.debug('path: ' + path);
-        core.debug('position: ' + position);
-
         core.debug('fod_uploader_ver: ' + fod_uploader_ver);
         core.debug('fod_credential_type: ' + fod_credential_type);
         if (fod_credential_type === 'api') {
