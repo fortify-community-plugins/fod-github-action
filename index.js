@@ -92,9 +92,9 @@ async function run() {
         execArray.push('-z', zip_location_t);
         execArray.push('-ep', entitlement_preference);
 
-        if (audit_preference_id) {
-            execArray.push('-a', audit_preference_id);
-        }
+        //if (audit_preference_id) {
+        //    execArray.push('-a', audit_preference_id);
+        //}
         if (remediation_scan_preference) {
             execArray.push('-rp', remediation_scan_preference);
         }
@@ -117,10 +117,10 @@ async function run() {
             execArray.push('os', run_open_source_scan);
         }
         if (notes) {
-            execArray.push('-n', '"' + notes + '"');
+            //execArray.push('-n', '"' + notes + '"');
         }
         if (polling_interval) {
-            execArray.push('-I', polling_interval);
+            //execArray.push('-I', polling_interval);
         }
         if (proxy_url) {
             execArray.push('-P', proxy_url, proxy_username, proxy_password, proxy_nt_domain, proxy_nt_workstation);
