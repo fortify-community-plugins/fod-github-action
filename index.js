@@ -89,7 +89,7 @@ async function run() {
         //execArray.push('-aurl', api_uri);
         //execArray.push('-rid', release_id);
         execArray.push('-bsi', '"' + bsi_token + '"');
-        execArray.push('-z', zip_location_t);
+        execArray.push('-z', zip_location);
         execArray.push('-ep', entitlement_preference);
 
         //if (audit_preference_id) {
