@@ -32,6 +32,7 @@ jobs:
           entitlement_preference: 'SubscriptionOnly'
           remediation_scan_preference: 'NonRemediationScanOnly'
           in_progress_scan_action: 'DoNotStartScan'
+          audit_preference_id: 'Automated'
           zip_location: 'fod.zip'
           polling_interval: '5'
           notes: 'Test Scan'
