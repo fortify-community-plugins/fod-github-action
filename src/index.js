@@ -27,11 +27,11 @@ async function run() {
 
         // GitHub passed inputs
         const repo_token = core.getInput('repo_token', { required: true });
-        const repository = core.getInput('repository');
+        const repository = core.getInput('repository', { required: true});
         const sha = core.getInput("sha");
-        const body = core.getInput("body");
-        const path = core.getInput("path");
-        const position = core.getInput("position");
+        //const body = core.getInput("body");
+        //const path = core.getInput("path");
+        //const position = core.getInput("position");
 
         // FOD specific inputs
         const fod_uploader_ver = core.getInput('fod_uploader_ver', { required: true });
@@ -200,9 +200,7 @@ async function run() {
                 owner: owner,
                 repo: repository,
                 commit_sha: commit_sha,
-                body: body,
-                path: path,
-                position: position
+                body: scanOutput
             });
         }
 
