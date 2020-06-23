@@ -71,13 +71,15 @@ async function run() {
         console.log('Downloaded.');
 
         let execArray = ['-jar', 'FodUpload.jar'];
-        if (fod_credential_type === 'apiCredentials') {
+        if (fod_credential_type.toString().equals('"apiCredentials')) {
             execArray.push('-ac', fod_access_key, fod_secret_key);
-        } else if (fod_credential_type === 'userCredentials') {
+        } else if (fod_credential_type.toString().equals('userCredentials')) {
             execArray.push('-uc', fod_username, fod_password)
         } else {
+            console.log('Unknown credential type: ' + fod_credential_type)
             throw 'Unknown credential type: ' + fod_credential_type
         }
+        console.log('here');
         execArray.push('-bsi', bsi_token);
         execArray.push('-z', zip_location);
         execArray.push('-ep', entitlement_preference);
