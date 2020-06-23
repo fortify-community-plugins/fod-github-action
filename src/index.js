@@ -181,7 +181,7 @@ async function run() {
         // remove not important lines
         scanOutput = scanOutput.replace("Authenticating", "");
         scanOutput = scanOutput.replace("Retiring Token : Token Retired Successfully", "");
-        scanOutput = scanOutput.repeat("Poll Status: In Progress", "")
+        scanOutput = scanOutput.replace("Poll Status: In Progress", "")
 
         // extract scan id and status
         let scanIdRegex = /\nScan (.*) uploaded (.*)\n/g;
