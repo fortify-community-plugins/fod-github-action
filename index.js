@@ -79,7 +79,7 @@ async function run() {
 
         let execArray = ['-jar', 'FodUpload.jar'];
         if (fod_credential_type === 'api') {
-            execArray.push('-ac', fod_access_key_t, fod_secret_key_t);
+            execArray.push('-ac', fod_access_key, fod_secret_key);
         } else if (fod_credential_type === 'user') {
             execArray.push('-uc', fod_username, fod_password)
         } else {
