@@ -155,7 +155,7 @@ async function run() {
         core.debug('Command line: ' + execArray.toString());
 
         let scanOutput = `
-***Fortify on Demand static analysis***        
+### Fortify on Demand static analysis        
 `;
         let scanError = '';
 
@@ -257,8 +257,8 @@ Poll Status: In Progress
 Poll Status: Completed
 Number of criticals: 1
 Number of highs: 5
-Number of mediums: 2
-Number of lows: 105
+Number of mediums: 20
+Number of lows: 100
 For application status details see the customer portal:
 https://emea.fortify.com/Redirect/Releases/${releaseId}
 Pass/Fail status: Failed
