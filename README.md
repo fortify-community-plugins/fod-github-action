@@ -7,8 +7,9 @@ allows you to upload your source code into Fortify on Demand and run static anal
 vulnerabilities. The action can also optionally add a comment to the commit or pull request that includes details of the 
 scan.  
 
-The action makes use of the [fod-uploader-java](https://github.com/fod-dev/fod-uploader-java) utility and downloads a
-specific version of it as part of the process. 
+The action currentl makes use of the [fod-uploader-java](https://github.com/fod-dev/fod-uploader-java) utility and downloads a
+specific version of it as part of the process. The intention is to replace this utility with native FOD REST API calls in
+the future.
 
 ## How to use it?
 
