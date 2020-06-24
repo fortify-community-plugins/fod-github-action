@@ -2,15 +2,20 @@
 
 ## What is it?
 
-The Fortify on Demand GitHub action allows you to check if your code is secure.
-When a commit is triggered, [Fortify on Demand]() checks
-the quality of the source code according to your defined policies.
+The [Fortify on Demand](https://www.microfocus.com/en-us/products/application-security-testing/overview) GitHub action 
+allows you to upload your source code into Fortify on Demand and run static analysis scan to find any security 
+vulnerabilities. The action can also optionally add a comment to the commit or pull request that includes details of the 
+scan.  
+
+The action makes use of the [fod-uploader-java](https://github.com/fod-dev/fod-uploader-java) utility and downloads a
+specific version of it as part of the process. 
 
 ## How to use it?
 
-### Step 1: Get your Fortify on Demand API keys
+### Step 1: Create your Fortify on Demand API key
 
-Sign up on [Fortify on Demand]().
+Sign up to [Fortify on Demand](https://www.microfocus.com/en-us/products/application-security-testing/free-trial) if you
+haven't done so already.
 
 In Administration, generate API keys.
 
@@ -42,6 +47,7 @@ jobs:
       uses: fod-community-plugins/fod-github-action@master
       with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
+          fod_credential_type: 'api'
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
           bsi_token: ${{ secrets.BSI_TOKEN }}
@@ -52,6 +58,8 @@ jobs:
           zip_location: 'fod.zip'
           polling_interval: '5'
           notes: 'Test Scan'
+          update_commit: true
+          update_pr: false
 ```
 
 The following parameters should *NOT* be changed:

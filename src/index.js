@@ -16,18 +16,14 @@ function getSha() {
 async function run() {
     try {
         core.info("Fortify on Demand GitHub Action")
-
-        // Get the JSON webhook payload for the event that triggered the workflow
-        //const payload = JSON.stringify(github.context.payload, undefined, 2)
-        //core.info('Event payload: ' + payload);
-
+        
         //
         // Inputs
         //
 
         // GitHub passed inputs
         const repo_token = core.getInput('repo_token', { required: true });
-        const repository = core.getInput('repository', { required: true});
+        const repository = core.getInput('repository', { required: true });
         const sha = core.getInput("sha");
         //const body = core.getInput("body");
         //const path = core.getInput("path");
@@ -61,48 +57,47 @@ async function run() {
         const proxy_password = core.getInput('proxy_password');
         const proxy_nt_domain = core.getInput('proxy_nt_domain');
         const proxy_nt_workstation = core.getInput('proxy_nt_workstation');
-        const commit_comment = core.getInput('commit_comment');
-        const pr_comment = core.getInput('pr_comment');
+        const update_commit = core.getInput('update_commit');
+        const update_pr = core.getInput('update_pr');
         
         // log inputs
-        core.debug('repo_token: ' + repo_token);
-        core.debug('repository: ' + repository);
-        core.debug('sha: ' + sha);
-        core.debug('fod_uploader_ver: ' + fod_uploader_ver);
-        core.debug('fod_credential_type: ' + fod_credential_type);
+        core.debug('repo_token: ${repo_token}');
+        core.debug('repository: ${repository}');
+        core.debug('fod_uploader_ver: ${fod_uploader_ver}');
+        core.debug('fod_credential_type: ${fod_credential_type}');
         if (fod_credential_type === 'api') {
-            core.debug('fod_access_key: ' + fod_access_key);
-            core.debug('fod_secret_key: ' + fod_secret_key);
+            core.debug('fod_access_key: ${fod_access_key}');
+            core.debug('fod_secret_key: ${fod_secret_key}');
         } else if (fod_credential_type === 'user') {
-            core.debug('fod_username: ' + fod_username)
-            core.debug('fod_password: ' + fod_password)
+            core.debug('fod_username: ${fod_username}');
+            core.debug('fod_password: ${fod_password}');
         } else {
-            core.info('Unknown credential type: ' + fod_credential_type)
+            core.info('Unknown credential type: ${fod_credential_type}');
         }
-        core.debug('bsi_token: ' + bsi_token);
-        core.debug('entitlement_preference: ' + entitlement_preference);
-        core.debug('zip_location: ' + zip_location);
-        core.debug('remediation_scan_preference: ' + remediation_scan_preference);
-        core.debug('in_progress_scan_action: ' + in_progress_scan_action);
-        core.debug('audit_preference_id: ', audit_preference_id);
-        core.debug('include_third_party_apps: ' + include_third_party_apps);
-        core.debug('is_bundled_assessment: ' + is_bundled_assessment);
-        core.debug('is_remediation_scan: ' + is_remediation_scan);
-        core.debug('purchase_entitlement: ' + purchase_entitlement);
-        core.debug('run_open_source_scan:' + run_open_source_scan);
-        core.debug('notes:' + notes);
-        core.debug('polling_interval: ' + polling_interval);
-        core.debug('commit_comment: ' + commit_comment);
-        core.debug('pr_comment: ' + pr_comment);
+        core.debug('bsi_token: ${bsi_token}');
+        core.debug('entitlement_preference: ${entitlement_preference}');
+        core.debug('zip_location: ${zip_location}');
+        core.debug('remediation_scan_preference: ${remediation_scan_preference}');
+        core.debug('in_progress_scan_action: ${in_progress_scan_action}');
+        core.debug('audit_preference_id: ${audit_preference_id}');
+        core.debug('include_third_party_apps: ${include_third_party_apps}');
+        core.debug('is_bundled_assessment: ${is_bundled_assessment}');
+        core.debug('is_remediation_scan: ${is_remediation_scan}');
+        core.debug('purchase_entitlement: ${purchase_entitlement}');
+        core.debug('run_open_source_scan: ${run_open_source_scan}');
+        core.debug('notes: ${notes}');
+        core.debug('polling_interval: ${polling_interval}');
+        core.debug('update_commit: ${update_commit}');
+        core.debug('update_pr: ${update_pr}');
 
         const [owner, repo] = repository.split("/");
-        core.debug('owner: ' + owner);
-        core.debug('repo:' + repo);
+        core.debug('owner: ${owner}');
+        core.debug('repo: ${repo}');
         const commit_sha = sha ? sha : getSha();
         core.debug('commit_sha: ${commit_sha}');
 
         const fodUploaderUrl = 'https://github.com/fod-dev/fod-uploader-java/releases/download/' + fod_uploader_ver + '/FodUpload.jar'
-        core.info('Downloading FODUploader from: ' + fodUploaderUrl)
+        core.info('Downloading FODUploader from: ${fodUploaderUrl}')
         const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
         core.addPath(fodUploaderPath)
         core.info('Downloaded.');
@@ -113,7 +108,7 @@ async function run() {
         } else if (fod_credential_type === 'user') {
             execArray.push('-uc', fod_username, fod_password)
         } else {
-            core.info('Unknown credential type: ' + fod_credential_type)
+            core.info('Unknown credential type: ${fod_credential_type}')
         }
         //execArray.push('-purl', portal_uri);
         //execArray.push('-aurl', api_uri);
@@ -193,8 +188,9 @@ async function run() {
 
         const octokit = github.getOctokit(repo_token);
 
-        if (commit_comment) {
-            core.info('Adding FOD scan details to commit.')
+        // add a comment to the commit?
+        if (update_commit) {
+            core.info('Adding FOD scan details as commit comment.')
             await octokit.repos.createCommitComment({
                 owner: owner,
                 repo: repo,
@@ -203,13 +199,14 @@ async function run() {
             });
         }
 
-        if (pr_comment) {
+        // add a comment to the pull request?
+        if (update_pr) {
             const pr = github.context.payload.pull_request;
             if (!pr) {
                 core.warning('This is not a pull request, ignoring request to comment on it!');
                 return;
             } else {
-                core.info('Adding FOD scan details to Pull Request.')
+                core.info('Adding FOD scan details as Pull Reques commentt.')
                 await octokit.issues.createComment({
                     owner: owner,
                     repo: repo,

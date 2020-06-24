@@ -57,10 +57,10 @@ inputs:
     description: 'Interval between checking scan status in minutes.'
     required: true
     default: '1'
-  commit_comment:
+  update_commit:
     description: 'Add a comment to the GitHub comment with FOD scan details.'
     default: false
-  pr_comment:
+  update_pr:
     description: 'Add a comment to the pull request with FOD scan details.'
     default: false
 outputs:

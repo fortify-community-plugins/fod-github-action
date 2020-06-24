@@ -32,5 +32,5 @@ jobs:
           zip_location: 'fod.zip'
           polling_interval: '1'
           notes: 'Test Scan'
-          commit_comment: true
-          pr_comment: false
+          update_commit: true
+          update_pr: false
