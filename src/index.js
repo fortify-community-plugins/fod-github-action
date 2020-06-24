@@ -154,7 +154,9 @@ async function run() {
         core.info('Running FodUpload.jar...')
         core.debug('Command line: ' + execArray.toString());
 
-        let scanOutput = '';
+        let scanOutput = `
+***Fortify on Demand static analysis***        
+`;
         let scanError = '';
 
         const options = {};
@@ -224,6 +226,10 @@ async function run() {
 
         core.setOutput('scan_id', scanId);
         core.setOutput('scan_status', scanStatus)
+
+        if (scanStatus === 'Failed') {
+            core.setFailed('Scan failed - Security Policy not met.')
+        }
 
     } catch (error) {
         core.setFailed(error.message);
