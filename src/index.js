@@ -151,7 +151,8 @@ async function run() {
         // Execution
         //
 
-        core.debug('Running FodUpload.jar with commandline: ' + execArray.toString());
+        core.info('Running FodUpload.jar...')
+        core.debug('Command line: ' + execArray.toString());
 
         let scanOutput = '';
         let scanError = '';

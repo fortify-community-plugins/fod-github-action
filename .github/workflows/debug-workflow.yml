@@ -36,6 +36,6 @@ jobs:
           zip_location: 'fod.zip'
           polling_interval: '1'
           notes: 'Test Scan'
-          update_commit: false
-          update_pr: true
+          update_commit: true
+          update_pr: false
           use_test_data: true
