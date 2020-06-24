@@ -1,4 +1,4 @@
-const { inspect } = require("util");
+const { inspect } = require('util');
 const core = require('@actions/core');
 const github = require('@actions/github');
 const tc = require('@actions/tool-cache');
@@ -6,7 +6,7 @@ const exec = require('@actions/exec');
 const io = require('@actions/io');
 
 function getSha() {
-    if (github.context.eventName == "pull_request") {
+    if (github.context.eventName == 'pull_request') {
         return github.context.payload.pull_request.head.sha;
     } else {
         return github.context.sha;
@@ -15,7 +15,7 @@ function getSha() {
 
 async function run() {
     try {
-        core.info("Fortify on Demand (FOD) GitHub Action")
+        core.info('Fortify on Demand GitHub Action')
         
         //
         // Inputs
@@ -24,10 +24,10 @@ async function run() {
         // GitHub passed inputs
         const repo_token = core.getInput('repo_token', { required: true });
         const repository = core.getInput('repository', { required: true });
-        const sha = core.getInput("sha");
-        //const body = core.getInput("body");
-        //const path = core.getInput("path");
-        //const position = core.getInput("position");
+        const sha = core.getInput('sha');
+        //const body = core.getInput('body');
+        //const path = core.getInput('path');
+        //const position = core.getInput('position');
 
         // FOD specific inputs
         const fod_uploader_ver = core.getInput('fod_uploader_ver', { required: true });
@@ -61,46 +61,46 @@ async function run() {
         const update_pr = core.getInput('update_pr');
         
         // log inputs
-        core.debug('repo_token: ${repo_token}');
-        core.debug('repository: ${repository}');
-        core.debug('fod_uploader_ver: ${fod_uploader_ver}');
-        core.debug('fod_credential_type: ${fod_credential_type}');
+        core.debug(`repo_token: ${repo_token}`);
+        core.debug(`repository: ${repository}`);
+        core.debug(`fod_uploader_ver: ${fod_uploader_ver}`);
+        core.debug(`fod_credential_type: ${fod_credential_type}`);
         if (fod_credential_type === 'api') {
-            core.debug('fod_access_key: ${fod_access_key}');
-            core.debug('fod_secret_key: ${fod_secret_key}');
+            core.debug(`fod_access_key: ${fod_access_key}`);
+            core.debug(`fod_secret_key: ${fod_secret_key}`);
         } else if (fod_credential_type === 'user') {
-            core.debug('fod_username: ${fod_username}');
-            core.debug('fod_password: ${fod_password}');
+            core.debug(`fod_username: ${fod_username}`);
+            core.debug(`fod_password: ${fod_password}`);
         } else {
-            core.info('Unknown credential type: ${fod_credential_type}');
+            core.info(`Unknown credential type: ${fod_credential_type}`);
         }
-        core.debug('bsi_token: ${bsi_token}');
-        core.debug('entitlement_preference: ${entitlement_preference}');
-        core.debug('zip_location: ${zip_location}');
-        core.debug('remediation_scan_preference: ${remediation_scan_preference}');
-        core.debug('in_progress_scan_action: ${in_progress_scan_action}');
-        core.debug('audit_preference_id: ${audit_preference_id}');
-        core.debug('include_third_party_apps: ${include_third_party_apps}');
-        core.debug('is_bundled_assessment: ${is_bundled_assessment}');
-        core.debug('is_remediation_scan: ${is_remediation_scan}');
-        core.debug('purchase_entitlement: ${purchase_entitlement}');
-        core.debug('run_open_source_scan: ${run_open_source_scan}');
-        core.debug('notes: ${notes}');
-        core.debug('polling_interval: ${polling_interval}');
-        core.debug('update_commit: ${update_commit}');
-        core.debug('update_pr: ${update_pr}');
+        core.debug(`bsi_token: ${bsi_token}`);
+        core.debug(`entitlement_preference: ${entitlement_preference}`);
+        core.debug(`zip_location: ${zip_location}`);
+        core.debug(`remediation_scan_preference: ${remediation_scan_preference}`);
+        core.debug(`in_progress_scan_action: ${in_progress_scan_action}`);
+        core.debug(`audit_preference_id: ${audit_preference_id}`);
+        core.debug(`include_third_party_apps: ${include_third_party_apps}`);
+        core.debug(`is_bundled_assessment: ${is_bundled_assessment}`);
+        core.debug(`is_remediation_scan: ${is_remediation_scan}`);
+        core.debug(`purchase_entitlement: ${purchase_entitlement}`);
+        core.debug(`run_open_source_scan: ${run_open_source_scan}`);
+        core.debug(`notes: ${notes}`);
+        core.debug(`polling_interval: ${polling_interval}`);
+        core.debug(`update_commit: ${update_commit}`);
+        core.debug(`update_pr: ${update_pr}`);
 
-        const [owner, repo] = repository.split("/");
-        core.debug('owner: ${owner}');
-        core.debug('repo: ${repo}');
+        const [owner, repo] = repository.split('/');
+        core.debug(`owner: ${owner}`);
+        core.debug(`repo: ${repo}`);
         const commit_sha = sha ? sha : getSha();
-        core.debug('commit_sha: ${commit_sha}');
+        core.debug(`commit_sha: ${commit_sha}`);
 
         const fodUploaderUrl = 'https://github.com/fod-dev/fod-uploader-java/releases/download/' + fod_uploader_ver + '/FodUpload.jar'
-        core.info('Downloading FODUploader from: ${fodUploaderUrl}')
+        core.info(`Downloading FODUploader from: ${fodUploaderUrl}`)
         const fodUploaderPath = await tc.downloadTool(fodUploaderUrl, 'FodUpload.jar');
         core.addPath(fodUploaderPath)
-        core.info('Downloaded.');
+        core.info(`Downloaded.`);
 
         let execArray = ['-jar', 'FodUpload.jar'];
         if (fod_credential_type === 'api') {
@@ -108,7 +108,7 @@ async function run() {
         } else if (fod_credential_type === 'user') {
             execArray.push('-uc', fod_username, fod_password)
         } else {
-            core.info('Unknown credential type: ${fod_credential_type}')
+            core.info(`Unknown credential type: ${fod_credential_type}`)
         }
         //execArray.push('-purl', portal_uri);
         //execArray.push('-aurl', api_uri);
@@ -174,9 +174,9 @@ async function run() {
         await exec.exec('java', execArray, options);
 
         // remove not important lines
-        scanOutput = scanOutput.replace("Authenticating", "");
-        scanOutput = scanOutput.replace("Retiring Token : Token Retired Successfully", "");
-        scanOutput = scanOutput.replace("Poll Status: In Progress", "")
+        scanOutput = scanOutput.replace('Authenticating', '');
+        scanOutput = scanOutput.replace('Retiring Token : Token Retired Successfully', '');
+        scanOutput = scanOutput.replace('Poll Status: In Progress', '')
 
         // extract scan id and status
         let scanIdRegex = /\nScan (.*) uploaded (.*)\n/g;
@@ -206,7 +206,7 @@ async function run() {
                 core.warning('This is not a pull request, ignoring request to comment on it!');
                 return;
             } else {
-                core.info('Adding FOD scan details as Pull Reques commentt.')
+                core.info('Adding FOD scan details as Pull Request comment.')
                 await octokit.issues.createComment({
                     owner: owner,
                     repo: repo,
@@ -220,8 +220,8 @@ async function run() {
         // Outputs
         //
 
-        core.setOutput("scan_id", scanId);
-        core.setOutput("scan_status", scanStatus)
+        core.setOutput('scan_id', scanId);
+        core.setOutput('scan_status', scanStatus)
 
     } catch (error) {
         core.setFailed(error.message);
