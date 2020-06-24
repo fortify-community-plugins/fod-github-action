@@ -38,4 +38,4 @@ jobs:
           notes: 'Test Scan'
           update_commit: true
           update_pr: false
-          use_test_data: true
+          use_test_data: false

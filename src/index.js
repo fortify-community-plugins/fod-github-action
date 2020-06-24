@@ -249,6 +249,7 @@ function getTestData(releaseId) {
         releaseId = 50000;
     }
     const testData = `
+### Fortify on Demand static analysis (demo data)
 Beginning upload
 Upload Status - Bytes sent:2263
 Scan 332041 uploaded successfully. Total bytes sent: 2263
