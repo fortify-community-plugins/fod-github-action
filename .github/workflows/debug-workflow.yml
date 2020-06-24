@@ -3,11 +3,11 @@ name: FOD GitHub Action (Debug)
 on:
   push:
     branches: 
-	  - master
-	  - feature/**
+	- master
+	- feature/**
   pull_request:
     branches: 
-	  - master
+	- master
 
 jobs:
   build:
