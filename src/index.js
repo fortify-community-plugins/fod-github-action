@@ -205,7 +205,7 @@ Pass/Fail status: Passed
         const octokit = github.getOctokit(repo_token);
 
         // add a comment to the commit?
-        if (update_commit === true) {
+        if (update_commit === 'true') {
             core.info('Adding FOD scan details as commit comment.')
             await octokit.repos.createCommitComment({
                 owner: owner,
@@ -216,7 +216,7 @@ Pass/Fail status: Passed
         }
 
         // add a comment to the pull request?
-        if (update_pr === true) {
+        if (update_pr === 'true') {
             const pr = github.context.payload.pull_request;
             if (!pr) {
                 core.info('This is not a pull request, ignoring request to comment on it!');
