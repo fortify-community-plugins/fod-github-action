@@ -171,7 +171,7 @@ async function run() {
         };
 
         // execute FodUpload
-        await exec.exec('java', execArray, options);
+        //await exec.exec('java', execArray, options);
 
         // remove not important lines
         scanOutput = scanOutput.replace('Authenticating', '');
