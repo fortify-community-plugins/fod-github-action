@@ -2,9 +2,12 @@ name: FOD GitHub Action (Debug)
 
 on:
   push:
-    branches: [ master, pr-test ]
+    branches: 
+		- master
+		- feature_**
   pull_request:
-    branches: [ master, pr-test ]
+    branches: 
+		- master
 
 jobs:
   build:
