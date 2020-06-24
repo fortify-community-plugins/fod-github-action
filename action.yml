@@ -24,7 +24,8 @@ inputs:
     description: 'Password for Fortify on Demand.'
   bsi_token:
     description: 'Build server token.'
-    required: true
+  fod_release_id:
+    description: 'Fortify on Demand Release Id.'
   entitlement_preference:
     description: 'Whether to use a single scan or subscription assessment, options are: 1/SingleScanOnly, 2/SubscriptionOnly, 3/SingleScanFirstThenSubscription, 4/SubscriptionFirstThenSingleScan.'
     required: true
@@ -62,6 +63,9 @@ inputs:
     default: false
   update_pr:
     description: 'Add a comment to the pull request with FOD scan details.'
+    default: false
+  use_test_data:
+    description: 'use built in test data - do not invoke FOD - for testing only!'
     default: false
 outputs:
   scan_id:

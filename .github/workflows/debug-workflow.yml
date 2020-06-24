@@ -28,6 +28,7 @@ jobs:
           fod_access_key: ${{ secrets.FOD_ACCESS_KEY }}
           fod_secret_key: ${{ secrets.FOD_SECRET_KEY }}
           bsi_token: ${{ secrets.BSI_TOKEN }}
+          fod_release_id: '55000'
           entitlement_preference: 'SubscriptionOnly'
           remediation_scan_preference: 'NonRemediationScanOnly'
           in_progress_scan_action: 'DoNotStartScan'
@@ -37,3 +38,4 @@ jobs:
           notes: 'Test Scan'
           update_commit: false
           update_pr: true
+          use_test_data: true

@@ -5,14 +5,6 @@ const tc = require('@actions/tool-cache');
 const exec = require('@actions/exec');
 const io = require('@actions/io');
 
-function getSha() {
-    if (github.context.eventName == 'pull_request') {
-        return github.context.payload.pull_request.head.sha;
-    } else {
-        return github.context.sha;
-    }
-}
-
 async function run() {
     try {
         core.info('Fortify on Demand GitHub Action')
@@ -37,6 +29,7 @@ async function run() {
         const fod_access_key = core.getInput('fod_access_key');
         const fod_secret_key = core.getInput('fod_secret_key');
         const bsi_token = core.getInput('bsi_token', { required: true });
+        const fod_release_id = core.getInput('fod_release_id');
         //const portal_url = core.getInput('portal_url');
         //const api_url = core.getInput('api_url');
         //const release_id = core.getInput('release_is');
@@ -59,6 +52,7 @@ async function run() {
         const proxy_nt_workstation = core.getInput('proxy_nt_workstation');
         const update_commit = core.getInput('update_commit');
         const update_pr = core.getInput('update_pr');
+        const use_test_data = core.getInput('use_test_data');
         
         // log inputs
         core.debug(`repo_token: ${repo_token}`);
@@ -75,6 +69,7 @@ async function run() {
             core.info(`Unknown credential type: ${fod_credential_type}`);
         }
         core.debug(`bsi_token: ${bsi_token}`);
+        core.debug(`fod_release_id: ${fod_release_id}`);
         core.debug(`entitlement_preference: ${entitlement_preference}`);
         core.debug(`zip_location: ${zip_location}`);
         core.debug(`remediation_scan_preference: ${remediation_scan_preference}`);
@@ -89,6 +84,7 @@ async function run() {
         core.debug(`polling_interval: ${polling_interval}`);
         core.debug(`update_commit: ${update_commit}`);
         core.debug(`update_pr: ${update_pr}`);
+        core.debug(`use_test_data: ${use_test_data}`);
 
         const [owner, repo] = repository.split('/');
         core.debug(`owner: ${owner}`);
@@ -170,25 +166,14 @@ async function run() {
             }
         };
 
-        // execute FodUpload
-        //await exec.exec('java', execArray, options);
+        if (use_test_data === 'true') {
+            core.debug('Using test data for release ')
+            scanOutput = getTestData(fod_release_id);
+        } else {
+            // execute FodUpload
+            await exec.exec('java', execArray, options);
+        }
 
-        scanOutput = `
-        Beginning upload
-Upload Status - Bytes sent:2263
-Scan 332041 uploaded successfully. Total bytes sent: 2263
-Poll Status: Queued
-
-Poll Status: In Progress
-Poll Status: Completed
-Number of criticals: 0
-Number of highs: 0
-Number of mediums: 0
-Number of lows: 0
-For application status details see the customer portal:
-https://emea.fortify.com/Redirect/Releases/55806
-Pass/Fail status: Passed
-        `
         // remove not important lines
         scanOutput = scanOutput.replace('Authenticating', '');
         scanOutput = scanOutput.replace('Retiring Token : Token Retired Successfully', '');
@@ -242,6 +227,36 @@ Pass/Fail status: Passed
     } catch (error) {
         core.setFailed(error.message);
     }
+}
+
+function getSha() {
+    if (github.context.eventName == 'pull_request') {
+        return github.context.payload.pull_request.head.sha;
+    } else {
+        return github.context.sha;
+    }
+}
+
+function getTestData(releaseId) {
+    if (releaseId === undefined) {
+        releaseId = 50000;
+    }
+    const testData = `
+Beginning upload
+Upload Status - Bytes sent:2263
+Scan 332041 uploaded successfully. Total bytes sent: 2263
+Poll Status: Queued
+Poll Status: In Progress
+Poll Status: Completed
+Number of criticals: 1
+Number of highs: 5
+Number of mediums: 2
+Number of lows: 105
+For application status details see the customer portal:
+https://emea.fortify.com/Redirect/Releases/${releaseId}
+Pass/Fail status: Failed
+`
+    return testData
 }
 
 run()
