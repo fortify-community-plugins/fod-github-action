@@ -173,6 +173,22 @@ async function run() {
         // execute FodUpload
         //await exec.exec('java', execArray, options);
 
+        scanOutput = `
+        Beginning upload
+Upload Status - Bytes sent:2263
+Scan 332041 uploaded successfully. Total bytes sent: 2263
+Poll Status: Queued
+
+Poll Status: In Progress
+Poll Status: Completed
+Number of criticals: 0
+Number of highs: 0
+Number of mediums: 0
+Number of lows: 0
+For application status details see the customer portal:
+https://emea.fortify.com/Redirect/Releases/55806
+Pass/Fail status: Passed
+        `
         // remove not important lines
         scanOutput = scanOutput.replace('Authenticating', '');
         scanOutput = scanOutput.replace('Retiring Token : Token Retired Successfully', '');
@@ -189,7 +205,7 @@ async function run() {
         const octokit = github.getOctokit(repo_token);
 
         // add a comment to the commit?
-        if (update_commit) {
+        if (update_commit === true) {
             core.info('Adding FOD scan details as commit comment.')
             await octokit.repos.createCommitComment({
                 owner: owner,
@@ -200,10 +216,10 @@ async function run() {
         }
 
         // add a comment to the pull request?
-        if (update_pr) {
+        if (update_pr === true) {
             const pr = github.context.payload.pull_request;
             if (!pr) {
-                core.warning('This is not a pull request, ignoring request to comment on it!');
+                core.info('This is not a pull request, ignoring request to comment on it!');
                 return;
             } else {
                 core.info('Adding FOD scan details as Pull Request comment.')

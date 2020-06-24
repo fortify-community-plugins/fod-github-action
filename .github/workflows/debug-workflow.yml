@@ -3,7 +3,7 @@ name: FOD GitHub Action (Debug)
 on:
   push:
     branches:
-    - master
+#    - master
     - feature/**
   pull_request:
     branches:
