@@ -4,7 +4,7 @@ on:
   push:
     branches:
     - master
-    - feature/**
+#    - feature/**
   pull_request:
     branches:
     - master
@@ -35,5 +35,5 @@ jobs:
           zip_location: 'fod.zip'
           polling_interval: '1'
           notes: 'Test Scan'
-          update_commit: true
+          update_commit: false
           update_pr: true
