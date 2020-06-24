@@ -15,7 +15,7 @@ function getSha() {
 
 async function run() {
     try {
-        core.info("Fortify on Demand GitHub Action")
+        core.info("Fortify on Demand (FOD) GitHub Action")
         
         //
         // Inputs
