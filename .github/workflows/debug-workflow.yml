@@ -1,4 +1,4 @@
-name: FOD GitHub Action (Debug)
+name: FOD GitHub Action
 
 on:
   push:
