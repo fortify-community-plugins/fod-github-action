@@ -1,3 +1,5 @@
+![FOD GitHub Action](https://github.com/fortify-community-plugins/fod-github-action/workflows/FOD%20GitHub%20Action/badge.svg)
+
 # Fortify on Demand (FOD) GitHub Action
 
 #### Table of Contents
@@ -233,10 +235,7 @@ to see if has already been discussed.
 
 **fod-github-action** is licensed under the [GNU General Public license](LICENSE).
 
-
----
-
-*Please note: this is community content provided by and for the benefit of [Micro Focus](https://www.microfocus.com/) customers, 
-it is not officially endorsed nor supported via [Micro Focus Software Support](https://www.microfocus.com/en-us/support).*
+This is community content provided by and for the benefit of [Micro Focus](https://www.microfocus.com/) customers, 
+it is not officially endorsed nor supported via [Micro Focus Software Support](https://www.microfocus.com/en-us/support).
 
 
