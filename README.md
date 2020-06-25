@@ -98,7 +98,7 @@ jobs:
         with:
           files: src/**
           dest: fod.zip
-      - uses: fortify-community-plugins/fod-github-action@v1
+      - uses: fortify-community-plugins/fod-github-action@v1-alpha
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           fod_credential_type: 'api'
